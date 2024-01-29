@@ -51,9 +51,14 @@ public class DropPlace : MonoBehaviour
     public void OnDrop(Grabbable grabbale)
     {
         OnObjectDropped.Invoke(grabbale.gameObject);
+
+        if (teleportToPosition)
+        {
+            grabbale.transform.parent = gameObject.transform;
+            grabbale.transform.localPosition = Vector3.zero;
+        }
         
-        grabbale.transform.parent = gameObject.transform;
-        grabbale.transform.localPosition = Vector3.zero;
+        
 
         grabbale.OnStartGrab.AddListener(OnGrab);
     }
