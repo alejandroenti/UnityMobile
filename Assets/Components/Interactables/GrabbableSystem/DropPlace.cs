@@ -1,6 +1,8 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using static Grabbable;
 
 public class DropPlace : MonoBehaviour
 {
@@ -15,6 +17,7 @@ public class DropPlace : MonoBehaviour
     [SerializeField] private CheckMode _checkMode;
     [SerializeField] private List<Grabbable> _validGrabbables = new();
     [SerializeField] private List<ObjectType> _validObjectTypes = new();
+    [SerializeField] public bool teleportToPosition = true;
 
     [Header("Events")]
     public UnityEvent<GameObject> OnObjectDropped;
@@ -48,6 +51,10 @@ public class DropPlace : MonoBehaviour
     public void OnDrop(Grabbable grabbale)
     {
         OnObjectDropped.Invoke(grabbale.gameObject);
+        
+        grabbale.transform.parent = gameObject.transform;
+        grabbale.transform.localPosition = Vector3.zero;
+
         grabbale.OnStartGrab.AddListener(OnGrab);
     }
 
@@ -58,5 +65,6 @@ public class DropPlace : MonoBehaviour
             grabbable.OnStartGrab.RemoveListener(OnGrab);
         }
         OnObjectGrabbed.Invoke(grabbaleObject);
+        grabbaleObject.transform.parent = null;
     }
 }
