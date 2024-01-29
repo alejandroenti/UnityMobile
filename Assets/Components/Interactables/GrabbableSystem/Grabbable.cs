@@ -14,18 +14,11 @@ public class Grabbable : MonoBehaviour
         SetOnParentZeroPosition
     }
 
-    [System.Flags]
-    public enum GrabbableType
-    {
-        Weapon = 1,     //000001
-        Consumible = 2, //000010
-        Throwable = 4   //000100
-    }
-
     [Header("Setup")]
     [SerializeField] private GrabMode _grabMode = GrabMode.FollowParentTeleport;
     [SerializeField, Min(0)] private float _smoothTime = 0.25f;
-    [SerializeField] public GrabbableType grabbableType = GrabbableType.Weapon;
+    [SerializeField] public List<ObjectType> objectTypes = new();
+
 
     [Header("Events")]
     public UnityEvent<GameObject, GameObject> OnStartGrab;
@@ -102,7 +95,7 @@ public class Grabbable : MonoBehaviour
     {
         Interactor interactorParent = parent.GetComponent<Interactor>();
 
-        if (interactorParent != null)
+        if (interactorParent == null)
         {
             return;
         }
