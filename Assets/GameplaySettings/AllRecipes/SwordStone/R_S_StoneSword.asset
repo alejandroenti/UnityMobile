@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7b37cffac817f64b9bd556524dc8ff8, type: 3}
+  m_Name: R_S_StoneSword
+  m_EditorClassIdentifier: 
+  recipeIngredients:
+  - {fileID: 11400000, guid: b5e3db3b5980e8d4f9d871fb9bdcbbec, type: 2}
+  - {fileID: 11400000, guid: b5e3db3b5980e8d4f9d871fb9bdcbbec, type: 2}
+  - {fileID: 11400000, guid: 6a7b7e78e411d2a4794eb85b59a885bc, type: 2}
+  resultIngredient: {fileID: 11400000, guid: 5f62b75a5aab0864db5e5e4fcffc0a7b, type: 2}
