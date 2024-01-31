@@ -3451,6 +3451,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4a8fc20f889ed1d4eb9b0a0332047353, type: 2}
   teleportToPosition: 0
   _smoothTime: 0.4
+  _fantasmalMaterial: {fileID: 2100000, guid: b5a7108163f60a349ba33ca104752a35, type: 2}
   OnObjectDropped:
     m_PersistentCalls:
       m_Calls:
@@ -3496,7 +3497,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -3553,8 +3554,7 @@ MonoBehaviour:
   _grabMode: 0
   _smoothTime: 0
   objectTypes:
-  - {fileID: 11400000, guid: 5de80088e1915d7469ce88f7202a03a0, type: 2}
-  - {fileID: 11400000, guid: 93c726c8a7bce8344a368c36ce1cadf4, type: 2}
+  - {fileID: 11400000, guid: 4a8fc20f889ed1d4eb9b0a0332047353, type: 2}
   OnStartGrab:
     m_PersistentCalls:
       m_Calls: []

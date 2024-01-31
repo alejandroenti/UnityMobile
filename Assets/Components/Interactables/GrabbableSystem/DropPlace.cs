@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -18,6 +19,7 @@ public class DropPlace : MonoBehaviour
     [SerializeField] private List<ObjectType> _validObjectTypes = new();
     [SerializeField] public bool teleportToPosition = true;
     [SerializeField, Min(0)] private float _smoothTime = 0.25f;
+    [SerializeField] private Material _fantasmalMaterial;
 
     [Header("Events")]
     public UnityEvent<GameObject> OnObjectDropped;
@@ -25,6 +27,8 @@ public class DropPlace : MonoBehaviour
 
     private IEnumerator _smoothPositioningCorrutine;
     private Vector3 _currentVelocity = Vector3.zero;
+
+    private GameObject _fantasmalObject;
 
     public bool IsValid(Grabbable grabbable)
     {
@@ -85,7 +89,29 @@ public class DropPlace : MonoBehaviour
 
         OnObjectGrabbed.Invoke(grabbaleObject);
         grabbaleObject.transform.parent = null;
+    }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent(out Grabbable grabbable))
+        {
+            _fantasmalObject = new GameObject();
+            Mesh fantasmalMesh = grabbable.GetComponent<MeshFilter>().mesh;
+
+            _fantasmalObject.transform.parent = gameObject.transform;
+            _fantasmalObject.name = "Fantasmal Object";
+            _fantasmalObject.GetComponent<MeshFilter>().mesh = fantasmalMesh;
+            _fantasmalMaterial.GetComponent<MeshRenderer>().material = _fantasmalMaterial;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.TryGetComponent(out Grabbable grabbable))
+        {
+            Destroy(_fantasmalObject); 
+            _fantasmalObject = null;
+        }
     }
 
     private IEnumerator SmoothPositioning(Grabbable grabbale)
