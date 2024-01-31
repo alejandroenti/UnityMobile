@@ -77,12 +77,21 @@ public class DropPlace : MonoBehaviour
         {
             grabbable.OnStartGrab.RemoveListener(OnGrab);
         }
+        
+        if (!teleportToPosition)
+        {
+            StopCoroutine(_smoothPositioningCorrutine);
+        }
+
         OnObjectGrabbed.Invoke(grabbaleObject);
         grabbaleObject.transform.parent = null;
+
     }
 
     private IEnumerator SmoothPositioning(Grabbable grabbale)
     {
+        grabbale.transform.parent = gameObject.transform;
+        grabbale.OnStartGrab.AddListener(OnGrab);
 
         while (grabbale.transform.position != gameObject.transform.position)
         {
@@ -95,10 +104,6 @@ public class DropPlace : MonoBehaviour
             );
 
             yield return null;
-        }
-
-        grabbale.transform.parent = gameObject.transform;
-        grabbale.OnStartGrab.AddListener(OnGrab);
-        yield break;
+        }      
     }
 }

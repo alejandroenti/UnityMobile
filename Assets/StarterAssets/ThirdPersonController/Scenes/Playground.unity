@@ -3450,7 +3450,7 @@ MonoBehaviour:
   _validObjectTypes:
   - {fileID: 11400000, guid: 4a8fc20f889ed1d4eb9b0a0332047353, type: 2}
   teleportToPosition: 0
-  _smoothTime: 0.25
+  _smoothTime: 0.4
   OnObjectDropped:
     m_PersistentCalls:
       m_Calls:
