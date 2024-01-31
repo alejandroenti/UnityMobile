@@ -58,6 +58,7 @@ public class DropPlace : MonoBehaviour
     public void OnDrop(Grabbable grabbale)
     {
         OnObjectDropped.Invoke(grabbale.gameObject);
+        DestroyFantasmalObject();
 
         // Revisamos si el Drop Place tiene el check de Teleport
         // En caso de tenerlo, directamente haremos el teleport del objeto al centro del objeto
@@ -89,28 +90,23 @@ public class DropPlace : MonoBehaviour
 
         OnObjectGrabbed.Invoke(grabbaleObject);
         grabbaleObject.transform.parent = null;
+
+        CreateFantasmalObject(grabbable);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out Grabbable grabbable))
+        if (other.TryGetComponent(out Grabbable grabbable) && IsValid(grabbable))
         {
-            _fantasmalObject = new GameObject();
-            Mesh fantasmalMesh = grabbable.GetComponent<MeshFilter>().mesh;
-
-            _fantasmalObject.transform.parent = gameObject.transform;
-            _fantasmalObject.name = "Fantasmal Object";
-            _fantasmalObject.GetComponent<MeshFilter>().mesh = fantasmalMesh;
-            _fantasmalMaterial.GetComponent<MeshRenderer>().material = _fantasmalMaterial;
+            CreateFantasmalObject(grabbable);
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.TryGetComponent(out Grabbable grabbable))
+        if (other.TryGetComponent(out Grabbable grabbable) && IsValid(grabbable))
         {
-            Destroy(_fantasmalObject); 
-            _fantasmalObject = null;
+            DestroyFantasmalObject();
         }
     }
 
@@ -131,5 +127,24 @@ public class DropPlace : MonoBehaviour
 
             yield return null;
         }      
+    }
+
+    private void CreateFantasmalObject(Grabbable grabbable)
+    {
+        _fantasmalObject = new GameObject("Fantasmal Object", typeof(MeshFilter), typeof(MeshRenderer));
+        Mesh fantasmalMesh = grabbable.GetComponent<MeshFilter>().mesh;
+
+        _fantasmalObject.transform.parent = gameObject.transform;
+        _fantasmalObject.transform.localPosition = Vector3.zero;
+        _fantasmalObject.transform.localScale = grabbable.transform.lossyScale;
+
+        _fantasmalObject.GetComponent<MeshFilter>().mesh = fantasmalMesh;
+        _fantasmalObject.GetComponent<MeshRenderer>().material = _fantasmalMaterial;
+    }
+
+    private void DestroyFantasmalObject()
+    {
+        Destroy(_fantasmalObject);
+        _fantasmalObject = null;
     }
 }
