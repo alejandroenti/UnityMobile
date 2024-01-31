@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using static Grabbable;
 
 public class DropPlace : MonoBehaviour
 {
@@ -18,10 +17,14 @@ public class DropPlace : MonoBehaviour
     [SerializeField] private List<Grabbable> _validGrabbables = new();
     [SerializeField] private List<ObjectType> _validObjectTypes = new();
     [SerializeField] public bool teleportToPosition = true;
+    [SerializeField, Min(0)] private float _smoothTime = 0.25f;
 
     [Header("Events")]
     public UnityEvent<GameObject> OnObjectDropped;
     public UnityEvent<GameObject> OnObjectGrabbed;
+
+    private IEnumerator _smoothPositioningCorrutine;
+    private Vector3 _currentVelocity = Vector3.zero;
 
     public bool IsValid(Grabbable grabbable)
     {
@@ -52,15 +55,20 @@ public class DropPlace : MonoBehaviour
     {
         OnObjectDropped.Invoke(grabbale.gameObject);
 
+        // Revisamos si el Drop Place tiene el check de Teleport
+        // En caso de tenerlo, directamente haremos el teleport del objeto al centro del objeto
+        // En caso contrario, haremos una Coroutine donde llevaremos el objeto hasta la zona
         if (teleportToPosition)
         {
             grabbale.transform.parent = gameObject.transform;
             grabbale.transform.localPosition = Vector3.zero;
-        }
-        
-        
+            grabbale.OnStartGrab.AddListener(OnGrab);
 
-        grabbale.OnStartGrab.AddListener(OnGrab);
+            return;
+        }
+
+        _smoothPositioningCorrutine = SmoothPositioning(grabbale);
+        StartCoroutine(_smoothPositioningCorrutine);
     }
 
     public void OnGrab(GameObject grabbaleObject, GameObject parent)
@@ -71,5 +79,26 @@ public class DropPlace : MonoBehaviour
         }
         OnObjectGrabbed.Invoke(grabbaleObject);
         grabbaleObject.transform.parent = null;
+    }
+
+    private IEnumerator SmoothPositioning(Grabbable grabbale)
+    {
+
+        while (grabbale.transform.position != gameObject.transform.position)
+        {
+            grabbale.transform.position =
+            Vector3.SmoothDamp(
+                grabbale.transform.position,
+                gameObject.transform.position,
+                ref _currentVelocity,
+                _smoothTime
+            );
+
+            yield return null;
+        }
+
+        grabbale.transform.parent = gameObject.transform;
+        grabbale.OnStartGrab.AddListener(OnGrab);
+        yield break;
     }
 }
