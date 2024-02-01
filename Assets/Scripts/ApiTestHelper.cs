@@ -9,11 +9,18 @@ public class ApiTestHelper : MonoBehaviour
 {
     [Header("Api Call Setup")]
     public string url = "";
+    public string pokemon = "";
     public Dictionary<string, string> parameters = new();
 
     [Header("Objects")]
     public TextMeshProUGUI resultField;
     public RawImage imageField;
+
+    private void Start()
+    {
+        url += pokemon;
+        MakePokemonApiCall();
+    }
 
     public void MakeApiCall()
     {
