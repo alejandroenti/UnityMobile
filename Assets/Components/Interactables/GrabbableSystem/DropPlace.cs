@@ -134,9 +134,10 @@ public class DropPlace : MonoBehaviour
         _fantasmalObject = new GameObject("Fantasmal Object", typeof(MeshFilter), typeof(MeshRenderer));
         Mesh fantasmalMesh = grabbable.GetComponent<MeshFilter>().mesh;
 
+        _fantasmalObject.transform.localScale = grabbable.transform.localScale;
         _fantasmalObject.transform.parent = gameObject.transform;
         _fantasmalObject.transform.localPosition = Vector3.zero;
-        _fantasmalObject.transform.localScale = grabbable.transform.lossyScale;
+        
 
         _fantasmalObject.GetComponent<MeshFilter>().mesh = fantasmalMesh;
         _fantasmalObject.GetComponent<MeshRenderer>().material = _fantasmalMaterial;
