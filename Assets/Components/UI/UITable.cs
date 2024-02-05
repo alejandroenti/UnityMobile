@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public abstract class UITable<T> : MonoBehaviour where T : UICell
@@ -49,5 +51,6 @@ public abstract class UITable<T> : MonoBehaviour where T : UICell
     }
 
     public abstract int TotalCellsCount {  get; }
+
     public abstract void SetupCell(T cell);
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class UICell : MonoBehaviour
+public abstract class UICell : MonoBehaviour
 {
     [Header("Setup UICell")]
     public int Index;
