@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class DropZone : MonoBehaviour, IDropHandler
+public class UIDropZone : MonoBehaviour, IDropHandler
 {
     [Header("Setup")]
     [SerializeField] private RectTransform _targetParent;
@@ -11,8 +11,6 @@ public class DropZone : MonoBehaviour, IDropHandler
     public void OnDrop(PointerEventData eventData)
     {
         GameObject dropped = eventData.pointerDrag;
-
-        Debug.Log("[*] INFO: On Drop");
 
         if (dropped.TryGetComponent(out UIDraggable cell))
         {
